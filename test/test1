@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    </head>
+    <title>Vue.js  实例</title>
+    <body>
+        <div id="app">
+        {{ message }}
+            <button v-bind:disabled="someDynamicCondition">Button</button>
+    </div>
+        <div id="app2">
+        <span v-bind:title="message">
+            Hover your mouse over me for a few seconds to see my dynamically bound title!
+        </span>
+    </div>
+        <div id="app3">
+        <p v-if="seen">Now you see me</p>    
+    </div>
+        <div id="app4">
+        <ol>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ol>
+        </div>
+        <div id="app5">
+            <p>{{message}}</p>
+            <button v-on:click="reverseMessage">reverseMessage</button>
+        </div>
+        <div id="app6">
+            <p v-once>{{message}}</p>   <!-- v- once用法，一次性插值，数据改变时，插值不变，但是要注意，该节点上的所有插值都回不改变数据 -->
+            <p>{{message}}</p>
+            <input v-model="message">
+        </div>
+        <div id="app-7">
+          <ol>
+            <!-- Now we provide each todo-item with the todo object    -->
+            <!-- it's representing, so that its content can be dynamic -->
+            <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+              
+          </ol>
+        </div>
+        
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+              message: 'Hello Vue!',
+                someDynamicCondition:false
+             }
+            })
+        var app2 = new Vue({
+            el: '#app2',
+            data: {
+            message: 'You loaded this page on'+new Date()
+        }
+        })
+        var app3 = new Vue({
+            el:'#app3',
+            data: {
+        //控制台直接操作seen属性的值：app3.seen = false
+                seen:true
+            }
+        })
+        var app4 =new Vue({
+            el: '#app4',
+            data: {
+                todos: [
+        //控制台可以直接输入数组的方法:
+        //app4.todos.push({ text: 'New item' })
+                    {text:'Learn javascript'},
+                    {text:'learn vue'},
+                    {text:'build something awesome'}
+                ]
+            }
+            
+        })
+        var app5 = new Vue({
+            el: '#app5',
+            data: {
+                message:'Hello Vue.js!'
+            },
+            methods: {
+                reverseMessage: function(){
+                    this.message = this.message.split('').reverse().join('');
+                }
+            }
+        })
+        var app6 = new Vue({
+            el:'#app6',
+            data: {
+                //双向数据绑定
+                message:"Hellow Vue!"
+            }
+        })
+        
+            Vue.component('todo-item', {
+              props: ['todo'],
+              template: '<li>{{ todo.text }}</li>'
+            })
+            //这个组件的流程大概是从groceryList中遍历数据给item，然后把item的值给了todo，再调用todo.text来获取数组里每一项的text值
+            var app7 = new Vue({
+              el: '#app-7',
+              data: {
+                groceryList: [
+                  { text: 'Vegetables' },
+                  { text: 'Cheese' },
+                  { text: 'Whatever else humans are supposed to eat' }
+                ]
+              }
+            })
+        </script>
+    </body>
+</html>
